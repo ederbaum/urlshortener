@@ -1,9 +1,8 @@
-package com.moonshotteam.urlshortener.filestorage;
+package com.ederbaum.urlshortener.filestorage;
 
+import com.ederbaum.urlshortener.filestorage.util.IOUtil;
+import com.ederbaum.urlshortener.filestorage.util.RandomUtil;
 import com.moonshotteam.urlshortener.ConfigDataManager;
-import com.moonshotteam.urlshortener.filestorage.util.IOUtil;
-import com.moonshotteam.urlshortener.filestorage.util.RandomUtil;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -14,9 +13,10 @@ import java.net.URL;
  */
 public final class FileStorageDAO {
 
-    public static final String STORAGE_FOLDER_PROPERTY_NAME = "storage.folder.path";
-    public static final String STORAGE_FILE_EXTENSION = ".txt";
-    public static final int KEY_LENGTH = 6;
+    private static final String STORAGE_FOLDER_PROPERTY_NAME = "storage.folder.path";
+    private static final String STORAGE_FILE_EXTENSION = ".txt";
+    private static final int KEY_LENGTH = 6;
+    private static final String STORAGE_FOLDER = ConfigDataManager.getProperty(STORAGE_FOLDER_PROPERTY_NAME);
 
     public String persist(URL url) throws IOException {
         final String key = createNewKey();
@@ -24,7 +24,7 @@ public final class FileStorageDAO {
         return key;
     }
 
-    public String getURLByKey(final String key) throws IOException {
+    public String findOriginalURLByKey(final String key) throws IOException {
         if (isValidKey(key)) {
             final File file = getFileFromKey(key);
             if (file.exists()) {
@@ -39,7 +39,6 @@ public final class FileStorageDAO {
         if (keyExists(key)) {
             key = createNewKey();
         }
-
         return key;
     }
 
@@ -49,12 +48,10 @@ public final class FileStorageDAO {
     }
 
     private File getFileFromKey(final String key) {
-        return new File(getStorageFolderPath() + key + STORAGE_FILE_EXTENSION);
+        return new File(STORAGE_FOLDER + key + STORAGE_FILE_EXTENSION);
     }
 
-    private String getStorageFolderPath() {
-        return ConfigDataManager.getProperty(STORAGE_FOLDER_PROPERTY_NAME);
-    }
+
 
     private boolean keyExists(final String key) {
         return getFileFromKey(key).exists();

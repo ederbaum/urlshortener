@@ -7,13 +7,9 @@ import org.junit.jupiter.api.Test;
 public class ConfigDataManagerTest {
 
     @Test
-    public void testGetUrlRoot()  {
-        Assertions.assertNotNull(ConfigDataManager.getUrlRoot());
-    }
-
-    @Test
     public void testGetUrlShortener() {
-        Assertions.assertNotNull(ConfigDataManager.getUrlShortener());
+        UrlShortener shortener = ConfigDataManager.getUrlShortener();
+        Assertions.assertNotNull(shortener);
     }
 
 

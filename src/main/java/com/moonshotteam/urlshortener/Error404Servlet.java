@@ -13,8 +13,8 @@ import java.net.URL;
 public class Error404Servlet extends HttpServlet {
 
 
-    public static final String NOT_FOUND_PAGE = "/404.html";
-    public static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
+    private static final String NOT_FOUND_PAGE = "/404.html";
+    private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException,

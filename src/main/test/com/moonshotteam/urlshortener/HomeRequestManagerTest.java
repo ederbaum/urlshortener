@@ -4,44 +4,27 @@ import com.moonshotteam.urlshortener.model.HomeData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
-
 public class HomeRequestManagerTest {
 
     private final HomeRequestManager manager = new HomeRequestManager();
 
-    private void assertNull(Object... data){
-        for(Object d : data){
-            Assertions.assertNull(d);
-        }
-    }
-
     @Test
-    public void testNUllUrl() {
+    public void testNullUrl() {
         HomeData data = manager.getHomeData((String) null);
-        assertNull(data.getShortUrl(), data.getOriginalUrl(), data.getError());
+        assertNull(data.getShortUrl(), data.getInputUrl(), data.getError());
     }
 
     @Test
-    public void testNoProtocolUrl() {
+    public void testUrlWithoutHttpProtocol() {
         String url = "www.google.com";
-        HomeData data = manager.getHomeData(url);
-        Assertions.assertEquals(data.getOriginalUrl(), "http://" + url);
-        Assertions.assertNotNull(data.getShortUrl());
-        assertNull(data.getError());
-    }
-
-    private void testNormalUrl(String url) {
-        HomeData data = manager.getHomeData(url);
-        Assertions.assertEquals(data.getOriginalUrl(), url);
-        Assertions.assertNotNull(data.getShortUrl());
-        assertNull(data.getError());
+        HomeData data = testNormalUrl(url);
+        Assertions.assertEquals(data.getInputUrl(), "http://" + url);
     }
 
     @Test
     public void testNormalUrl() {
-        testNormalUrl("http://www.google.com");
-        testNormalUrl("ftp:www.google.com");
+        testNormalUrlWithSameInput("http://www.google.com");
+        testNormalUrlWithSameInput("ftp:www.google.com");
     }
 
 
@@ -49,8 +32,31 @@ public class HomeRequestManagerTest {
     public void testInvalidUrl() {
         String url = "wrong url";
         HomeData data = manager.getHomeData(url);
-        Assertions.assertEquals(url, data.getOriginalUrl());
+        Assertions.assertEquals(url, data.getInputUrl());
         Assertions.assertNull(data.getShortUrl());
         Assertions.assertEquals("Invalid URL", data.getError());
+        Assertions.assertTrue(data.hasError());
+    }
+
+
+    private void assertNull(Object... data){
+        for(Object d : data){
+            Assertions.assertNull(d);
+        }
+    }
+
+    private HomeData testNormalUrl(String url) {
+        HomeData data = manager.getHomeData(url);
+        Assertions.assertNotNull(data.getShortUrl());
+        Assertions.assertFalse(data.hasError());
+        Assertions.assertTrue(data.hasShortUrl());
+        Assertions.assertTrue(data.hasInputUrl());
+        assertNull(data.getError());
+        return data;
+    }
+
+    private void testNormalUrlWithSameInput(String url) {
+        HomeData data = testNormalUrl(url);
+        Assertions.assertEquals(data.getInputUrl(), url);
     }
 }

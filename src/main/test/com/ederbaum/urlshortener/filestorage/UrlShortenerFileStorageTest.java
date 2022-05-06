@@ -1,6 +1,6 @@
-package com.moonshotteam.urlshortener.filestorage;
+package com.ederbaum.urlshortener.filestorage;
 
-import com.moonshotteam.urlshortener.ConfigDataManager;
+import com.moonshotteam.urlshortener.model.ShortenResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,17 +14,18 @@ public class UrlShortenerFileStorageTest {
 
     private void testWriteAndRead(String urlString) throws IOException, URISyntaxException {
         final URL originalURL = new URL(urlString);
-        final String shortURL = urlShortener.shorten(originalURL).getPath();
-        final URL storedURL = urlShortener.getOriginalURL(shortURL);
+        final ShortenResult shortenResult = urlShortener.shorten(urlString);
+        final URL storedURL = urlShortener.getOriginalURL(shortenResult.getShortUrl().toString());
 
         Assertions.assertEquals(originalURL, storedURL);
     }
 
     @Test
     public void testRefuseToShortenMyDomainURL() throws IOException, URISyntaxException {
-        final URL url = new URL(ConfigDataManager.getUrlRoot() + "test");
-        URL result =  urlShortener.shorten(url);
-        Assertions.assertEquals(url, result);
+        String originalURL = UrlShortenerFileStorage.URL_ROOT + "test";
+        final URL expected = new URL(originalURL);
+        ShortenResult result =  urlShortener.shorten(originalURL);
+        Assertions.assertEquals(expected, result.getShortUrl());
 
     }
 

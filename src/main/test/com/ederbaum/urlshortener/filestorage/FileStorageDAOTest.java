@@ -1,10 +1,9 @@
-package com.moonshotteam.urlshortener.filestorage;
+package com.ederbaum.urlshortener.filestorage;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-
 import java.net.URL;
 
 public class FileStorageDAOTest {
@@ -21,7 +20,7 @@ public class FileStorageDAOTest {
         Assertions.assertFalse(dao.isValidKey("le.txt")); // . not allowed
         Assertions.assertFalse(dao.isValidKey("letxt")); // Size must be 6
         Assertions.assertFalse(dao.isValidKey("file.txt")); // . not allowed and size must be 6
-        Assertions.assertFalse(dao.isValidKey("../")); // ../ not allowed and size must be 6
+        Assertions.assertFalse(dao.isValidKey("../abc")); // ../ not allowed and size must be 6
     }
 
     @Test
@@ -32,9 +31,11 @@ public class FileStorageDAOTest {
 
     private void testWriteAndRead(String urlString) throws IOException {
         final URL url = new URL(urlString);
-        final String key = dao.persist(url);
-        final String readUrl = dao.getURLByKey(key);
 
+        final String key = dao.persist(url);
+        final String readUrl = dao.findOriginalURLByKey(key);
+
+        Assertions.assertNotNull(readUrl);
         Assertions.assertEquals(url, new URL(readUrl));
     }
 

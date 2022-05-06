@@ -267,7 +267,7 @@
             <nav data-v-d8811b88="" role="navigation" class="d-flex">
               <h1 data-v-d8811b88="" class="header__logo d-flex font-weight-normal"><a
                   data-v-d8811b88=""
-                  href="/app/"
+                  href="."
                   aria-current="page"
                   class="router-link-exact-active router-link-active">TinyURL</a></h1>
               <div data-v-d8811b88="" class="flex-grow-1">
@@ -314,7 +314,7 @@
                                     class="b"></path></svg>
                                 Enter a long URL to make a TinyURL
                               </label> <input name="long-url" id="long-url"
-                                value="<%= data.getOriginalUrl()!=null?data.getOriginalUrl():"" %>"
+                                value="<%= data.hasInputUrl()?data.getInputUrl():"" %>"
                                 aria-label="Long URL"
                                 required="required"
                                 class="enterurl form-control form-control-lg form-control-fancy text-t-green"
@@ -322,12 +322,12 @@
                               <!---->
                               <!----></div>
 
-                              <% if (data.getError()!=null) { %>
+                              <% if (data.hasError()) { %>
                               <h3 style="color:red"><%= data.getError() %></h3>
                               <% } %>
                                 
                                 <!-- START RESULT URL -->
-                                 <% if (data.getShortUrl()!=null) { %>
+                                 <% if (data.hasShortUrl()) { %>
                                  <div>
                                      <div data-v-2eb0498e="" class="form-group mb-3">
                                          <label data-v-2eb0498e="" class="label-fancy">TinyURL</label> 

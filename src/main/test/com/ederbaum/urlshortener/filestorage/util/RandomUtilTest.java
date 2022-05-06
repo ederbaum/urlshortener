@@ -1,4 +1,4 @@
-package com.moonshotteam.urlshortener.filestorage.util;
+package com.ederbaum.urlshortener.filestorage.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

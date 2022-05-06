@@ -9,13 +9,9 @@ import java.util.Properties;
  * Class responsible for loading settings in config.properties file.
  */
 public final class ConfigDataManager {
-    private static final String CONFIG_FILE_PATH = "/config.properties";
-    private static final String URL_ROOT_PROPERTY_NAME = "url.root";
-    private static final String SHORTENER_CLASS_PROPERTY_NAME = "shortener.class";
 
-    public static String getUrlRoot() {
-        return getProperty(URL_ROOT_PROPERTY_NAME);
-    }
+    private static final String CONFIG_FILE_PATH = "/config.properties";
+    private static final String SHORTENER_CLASS_PROPERTY_NAME = "shortener.class";
 
     private static UrlShortener urlShortener;
 
@@ -41,7 +37,7 @@ public final class ConfigDataManager {
     }
 
     private static Properties properties;
-    private static Properties getProperties() {
+    private static synchronized Properties getProperties() {
         if (properties == null) {
             try (InputStream is = ConfigDataManager.class.getResourceAsStream(CONFIG_FILE_PATH)) {
                 if(is!=null){
